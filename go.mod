@@ -1,3 +1,3 @@
-module github.com/femnad/ratfilter
+module github.com/femnad/ratilf
 
 require github.com/femnad/mare v0.0.3
