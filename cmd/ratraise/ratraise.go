@@ -30,7 +30,7 @@ func runOrRaiseWindow(executable string, class string) {
 		return
 	}
 	cmd := exec.Command(executable)
-	err := cmd.Run()
+	err := cmd.Start()
 	mare.PanicIfErr(err)
 }
 
