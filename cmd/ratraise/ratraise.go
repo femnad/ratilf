@@ -5,7 +5,6 @@ import (
 	"github.com/femnad/mare"
 	"github.com/femnad/ratilf/pkg/ratfilter"
 	"os/exec"
-	"sort"
 	"strings"
 )
 
@@ -23,15 +22,14 @@ func runOrRaiseWindow(executable string, class string) {
 	if class == "" {
 		class = getClassFromExecutable(executable)
 	}
-	windows := ratfilter.GetWindowsOfClass(class)
-	sort.Sort(ratfilter.DescByLastAccess(windows))
-	for _, window := range windows {
-		ratfilter.FocusWindowWithNumber(&window)
-		return
+	windows := ratfilter.GetWindowsOfClass(class).SortByLastAccessAsc()
+	if len(windows) > 0 {
+		ratfilter.FocusWindowWithNumber(&windows[0])
+	} else {
+		cmd := exec.Command(executable)
+		err := cmd.Start()
+		mare.PanicIfErr(err)
 	}
-	cmd := exec.Command(executable)
-	err := cmd.Start()
-	mare.PanicIfErr(err)
 }
 
 func main() {

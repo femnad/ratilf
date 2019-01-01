@@ -29,7 +29,8 @@ type WindowList []Window
 type WindowStatus string
 
 const (
-	windowFormat = "%n %l %c %s %t"
+	windowFormat     = "%n %l %c %s %t"
+	noManagedWindows = "No managed windows"
 )
 
 func ParseInt(s string) int {
@@ -45,6 +46,11 @@ func RunRatpoisonWindowCommand() WindowList {
 	mare.PanicIfErr(err)
 	var windows WindowList
 	outputString := strings.TrimSpace(string(output))
+
+	if outputString == noManagedWindows {
+		return make(WindowList, 0)
+	}
+
 	for _, line := range strings.Split(outputString, "\n") {
 		fields := strings.Fields(line)
 		windowNumber := ParseInt(fields[0])
@@ -115,7 +121,7 @@ func (w DescByLastAccess) Swap(i, j int) {
 	w[i], w[j] = w[j], w[i]
 }
 
-func GetWindowsOfClass(class string) []Window {
+func GetWindowsOfClass(class string) WindowList {
 	return getWindowsWithClass(class)
 }
 
