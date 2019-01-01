@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/femnad/mare"
 	"os/exec"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -66,6 +67,24 @@ func getWindowsWithClass(class string) WindowList {
 		}
 	}
 	return matchedWindows
+}
+
+func GetWindows() WindowList {
+	return RunRatpoisonWindowCommand()
+}
+
+func (w WindowList) Output() string {
+	var sb strings.Builder
+	for _, window := range w {
+		sb.WriteString(window.String())
+		sb.WriteString("\n")
+	}
+	return sb.String()
+}
+
+func (w WindowList) SortByLastAccessAsc() WindowList {
+	sort.Sort(AscByLastAccess(w))
+	return w
 }
 
 type AscByLastAccess WindowList
