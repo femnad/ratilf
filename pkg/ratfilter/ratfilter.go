@@ -93,6 +93,11 @@ func (w WindowList) SortByLastAccessAsc() WindowList {
 	return w
 }
 
+func (w WindowList) SortByLastAccessDesc() WindowList {
+	sort.Sort(DescByLastAccess(w))
+	return w
+}
+
 type AscByLastAccess WindowList
 
 func (w AscByLastAccess) Len() int {

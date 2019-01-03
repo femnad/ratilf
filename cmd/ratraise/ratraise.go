@@ -22,7 +22,7 @@ func runOrRaiseWindow(executable string, class string) {
 	if class == "" {
 		class = getClassFromExecutable(executable)
 	}
-	windows := ratfilter.GetWindowsOfClass(class).SortByLastAccessAsc()
+	windows := ratfilter.GetWindowsOfClass(class).SortByLastAccessDesc()
 	if len(windows) > 0 {
 		ratfilter.FocusWindowWithNumber(&windows[0])
 	} else {
