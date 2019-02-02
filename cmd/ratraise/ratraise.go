@@ -2,9 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/femnad/mare"
 	"github.com/femnad/ratilf/pkg/ratfilter"
-	"os/exec"
+	"github.com/femnad/ratilf/pkg/run"
 	"strings"
 )
 
@@ -14,21 +13,20 @@ func ensureExecutable(executable string) {
 	}
 }
 
-func getClassFromExecutable(executable string) string {
-	return strings.Title(executable)
+func getClassFromCommand(command string) string {
+	exe := strings.Fields(command)[0]
+	return strings.Title(exe)
 }
 
-func runOrRaiseWindow(executable string, class string) {
+func runOrRaiseWindow(command string, class string) {
 	if class == "" {
-		class = getClassFromExecutable(executable)
+		class = getClassFromCommand(command)
 	}
 	windows := ratfilter.GetWindowsOfClass(class).SortByLastAccessDesc()
 	if len(windows) > 0 {
 		ratfilter.FocusWindowWithNumber(&windows[0])
 	} else {
-		cmd := exec.Command(executable)
-		err := cmd.Start()
-		mare.PanicIfErr(err)
+		run.Command(command)
 	}
 }
 
